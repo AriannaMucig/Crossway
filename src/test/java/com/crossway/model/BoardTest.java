@@ -32,4 +32,13 @@ class BoardTest {
         assertThrows(IllegalArgumentException.class, () -> board.placeStone(pos2, PlayerColor.WHITE));
     }
 
+    @Test
+    void testPlaceStoneOnOccupiedCellThrowsException(){
+        Board board = new Board();
+        Position pos = new Position(1,1);
+        board.placeStone(pos, PlayerColor.BLACK);
+
+        assertThrows(IllegalArgumentException.class, () -> board.placeStone(pos, PlayerColor.BLACK));
+        assertThrows(IllegalArgumentException.class, () -> board.placeStone(pos, PlayerColor.WHITE));
+    }
 }
