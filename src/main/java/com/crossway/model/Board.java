@@ -14,6 +14,9 @@ public class Board {
 
     public void placeStone(Position pos, PlayerColor color){
         checkOutOfBoard(pos);
+        if (!isCellEmpty(pos)){
+            throw new IllegalArgumentException("Cell at position "+ pos+  " is already occupied");
+        }
         grid[pos.x()][pos.y()].setColor(color);
     }
 
