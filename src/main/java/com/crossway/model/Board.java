@@ -1,5 +1,7 @@
 package com.crossway.model;
 
+import java.util.List;
+
 public class Board {
     private final Cell[][] grid;
 
@@ -43,6 +45,11 @@ public class Board {
         if (pos.x()<0 | pos.x() >=19|pos.y()<0 | pos.y() >=19){
             throw new IllegalArgumentException("Position "+ pos + "is out of the board");
         }
+    }
+
+    public List<Position> getAdjacentPositions(Position center){
+        checkOutOfBoard(center);
+        return List.of(new Position(center.x()-1, center.y()-1),new Position(center.x(), center.y()-1),new Position(center.x()+1, center.y()-1),new Position(center.x()+1, center.y()),new Position(center.x()+1, center.y()+1),new Position(center.x(), center.y()+1),new Position(center.x()-1, center.y()+1),new Position(center.x()-1, center.y()));
     }
 
 }
