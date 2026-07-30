@@ -10,4 +10,5 @@ class BoardTest {
         Board board = new Board();
         assertThat(board.isEmpty()).isTrue();
     }
-}
+
+
