@@ -13,6 +13,7 @@ public class Board {
     }
 
     public void placeStone(Position pos, PlayerColor color){
+        checkOutOfBoard(pos);
         grid[pos.x()][pos.y()].setColor(color);
     }
 
@@ -26,11 +27,19 @@ public class Board {
         return true;
     }
     public boolean isCellEmpty(Position pos){
+        checkOutOfBoard(pos);
         return grid[pos.x()][pos.y()].isEmpty();
     }
 
     public PlayerColor getStone(Position pos){
+        checkOutOfBoard(pos);
         return grid[pos.x()][pos.y()].getColor();
+    }
+
+    private void checkOutOfBoard(Position pos){
+        if (pos.x()<0 | pos.x() >=19|pos.y()<0 | pos.y() >=19){
+            throw new IllegalArgumentException("Position "+ pos + "is out of the board");
+        }
     }
 
 }
