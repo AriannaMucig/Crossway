@@ -130,4 +130,14 @@ class BoardTest {
         assertThat(board.isCellEmpty(pos4)).isFalse();
         assertThat(board.getStone(pos4)).isEqualTo(PlayerColor.BLACK);
     }
+
+    @Test
+    void TestDiagonalWhenCrosscut(){
+        Board board = new Board();
+        board.placeStone(new Position(1,1), PlayerColor.BLACK);
+        board.placeStone(new Position(1,0), PlayerColor.WHITE);
+        board.placeStone(new Position(0,1), PlayerColor.WHITE);
+        assertThrows(IllegalArgumentException.class, () -> board.placeStone(new Position(0,0), PlayerColor.BLACK));
+
+    }
 }
