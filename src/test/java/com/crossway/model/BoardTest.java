@@ -55,6 +55,51 @@ class BoardTest {
         List<Position> adjacents = board.getAdjacentPositions(center);
 
         assertThat(adjacents).containsExactlyInAnyOrderElementsOf(expectedAdjacents);
+    }
 
+    @Test
+    void testAdjacencyAtCornersAndEdges() {
+        Board board = new Board();
+        Position pos1 = new Position(0, 0);
+        Position pos2 = new Position(0, 18);
+        Position pos3 = new Position(18, 18);
+        Position pos4 = new Position(18, 0);
+        Position pos5 = new Position(0, 5);
+        Position pos6 = new Position(18, 5);
+        Position pos7 = new Position(10, 0);
+        Position pos8 = new Position(10, 18);
+
+        List<Position> expectedAdjacents1 = List.of(new Position(0, 1), new Position(1, 1), new Position(1, 0));
+        List<Position> adjacents1 = board.getAdjacentPositions(pos1);
+
+        List<Position> expectedAdjacents2 = List.of(new Position(0, 17), new Position(1, 17), new Position(1, 18));
+        List<Position> adjacents2 = board.getAdjacentPositions(pos2);
+
+        List<Position> expectedAdjacents3 = List.of(new Position(18, 17), new Position(17, 17), new Position(17, 18));
+        List<Position> adjacents3 = board.getAdjacentPositions(pos3);
+
+        List<Position> expectedAdjacents4 = List.of(new Position(17, 0), new Position(17, 1), new Position(18, 1));
+        List<Position> adjacents4 = board.getAdjacentPositions(pos4);
+
+        List<Position> expectedAdjacents5 = List.of(new Position(0, 4), new Position(1, 4), new Position(1, 5), new Position(1, 6), new Position(0, 6));
+        List<Position> adjacents5 = board.getAdjacentPositions(pos5);
+
+        List<Position> expectedAdjacents6 = List.of(new Position(18, 4), new Position(17, 4), new Position(17, 5), new Position(17, 6), new Position(18, 6));
+        List<Position> adjacents6 = board.getAdjacentPositions(pos6);
+
+        List<Position> expectedAdjacents7 = List.of(new Position(9, 0), new Position(9, 1), new Position(10, 1), new Position(11, 1), new Position(11, 0));
+        List<Position> adjacents7 = board.getAdjacentPositions(pos7);
+
+        List<Position> expectedAdjacents8 = List.of(new Position(9, 18), new Position(9, 17), new Position(10, 17), new Position(11, 17), new Position(11, 18));
+        List<Position> adjacents8 = board.getAdjacentPositions(pos8);
+
+        assertThat(adjacents1).containsExactlyInAnyOrderElementsOf(expectedAdjacents1);
+        assertThat(adjacents2).containsExactlyInAnyOrderElementsOf(expectedAdjacents2);
+        assertThat(adjacents3).containsExactlyInAnyOrderElementsOf(expectedAdjacents3);
+        assertThat(adjacents4).containsExactlyInAnyOrderElementsOf(expectedAdjacents4);
+        assertThat(adjacents5).containsExactlyInAnyOrderElementsOf(expectedAdjacents5);
+        assertThat(adjacents6).containsExactlyInAnyOrderElementsOf(expectedAdjacents6);
+        assertThat(adjacents7).containsExactlyInAnyOrderElementsOf(expectedAdjacents7);
+        assertThat(adjacents8).containsExactlyInAnyOrderElementsOf(expectedAdjacents8);
     }
 }
