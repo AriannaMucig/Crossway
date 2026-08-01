@@ -13,4 +13,15 @@ class GameTest {
         Game game = new Game();
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
     }
+
+    @Test
+    void testAlternateTurns(){
+        Game game =new Game();
+
+        game.playMove(new Position(5, 6));
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
+
+        game.playMove(new Position(8, 6));
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
+    }
 }
