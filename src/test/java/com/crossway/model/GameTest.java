@@ -24,4 +24,15 @@ class GameTest {
         game.playMove(new Position(8, 6));
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
     }
+
+    @Test
+    void testTurnDoesNotChangeWithInvalidMove(){
+        Game game =new Game();
+
+        game.playMove(new Position(5, 6));
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
+        assertThrows(IllegalArgumentException.class, () -> game.playMove(new Position(20, 6)));
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
+    }
+
 }
