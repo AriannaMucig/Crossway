@@ -13,5 +13,11 @@ public class Game {
         return currentTurn;
     }
 
+    public void playMove(Position pos){
+        PlayerColor color = currentTurn;
+        board.placeStone(pos,color);
+        currentTurn = (color == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
+    }
+
 
 }
