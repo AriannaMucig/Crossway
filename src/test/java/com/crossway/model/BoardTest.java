@@ -102,4 +102,32 @@ class BoardTest {
         assertThat(adjacents7).containsExactlyInAnyOrderElementsOf(expectedAdjacents7);
         assertThat(adjacents8).containsExactlyInAnyOrderElementsOf(expectedAdjacents8);
     }
+
+    @Test
+    void testDiagonalWhenNoCrosscut(){
+        Board board = new Board();
+        board.placeStone(new Position(4,5), PlayerColor.BLACK);
+
+        Position pos1 =new Position(3,4);
+        Position pos2 =new Position(3,6);
+        Position pos3 =new Position(5,4);
+        Position pos4 =new Position(5,6);
+
+        board.placeStone(pos1, PlayerColor.BLACK);
+        board.placeStone(pos2, PlayerColor.BLACK);
+        board.placeStone(pos3, PlayerColor.BLACK);
+        board.placeStone(pos4, PlayerColor.BLACK);
+
+        assertThat(board.isCellEmpty(pos1)).isFalse();
+        assertThat(board.getStone(pos1)).isEqualTo(PlayerColor.BLACK);
+
+        assertThat(board.isCellEmpty(pos2)).isFalse();
+        assertThat(board.getStone(pos2)).isEqualTo(PlayerColor.BLACK);
+
+        assertThat(board.isCellEmpty(pos3)).isFalse();
+        assertThat(board.getStone(pos3)).isEqualTo(PlayerColor.BLACK);
+
+        assertThat(board.isCellEmpty(pos4)).isFalse();
+        assertThat(board.getStone(pos4)).isEqualTo(PlayerColor.BLACK);
+    }
 }
