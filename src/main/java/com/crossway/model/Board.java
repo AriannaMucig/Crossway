@@ -1,5 +1,6 @@
 package com.crossway.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -49,7 +50,33 @@ public class Board {
 
     public List<Position> getAdjacentPositions(Position center){
         checkOutOfBoard(center);
-        return List.of(new Position(center.x()-1, center.y()-1),new Position(center.x(), center.y()-1),new Position(center.x()+1, center.y()-1),new Position(center.x()+1, center.y()),new Position(center.x()+1, center.y()+1),new Position(center.x(), center.y()+1),new Position(center.x()-1, center.y()+1),new Position(center.x()-1, center.y()));
+        List<Position> adjacentPositions= new ArrayList<>();
+        if(center.x()-1>=0){
+            adjacentPositions.add(new Position(center.x()-1, center.y()));
+            if(center.y()-1>=0){
+                adjacentPositions.add(new Position(center.x()-1, center.y()-1));
+            }
+            if(center.y()+1<19){
+                adjacentPositions.add(new Position(center.x()-1, center.y()+1));
+            }
+        }
+        if(center.x()+1<19){
+            adjacentPositions.add(new Position(center.x()+1, center.y()));
+            if(center.y()-1>=0){
+                adjacentPositions.add(new Position(center.x()+1, center.y()-1));
+            }
+            if(center.y()+1<19){
+                adjacentPositions.add(new Position(center.x()+1, center.y()+1));
+            }
+        }
+
+        if (center.y()-1>=0){
+            adjacentPositions.add(new Position(center.x(), center.y()-1));
+        }
+        if (center.y()+1<19){
+            adjacentPositions.add(new Position(center.x(), center.y()+1));
+        }
+        return adjacentPositions;
     }
 
 }
