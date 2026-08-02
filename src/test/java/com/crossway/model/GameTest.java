@@ -35,4 +35,15 @@ class GameTest {
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
     }
 
+    @Test
+    void testPieRuleSwap(){
+        Game game =new Game();
+        Position firstMove = new Position(5, 6);
+        game.playMove(firstMove);
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
+
+        game.applyPieRule();
+        assertThat(game.getBoard().getStone(firstMove)).isEqualTo(PlayerColor.WHITE);
+        assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
+    }
 }
