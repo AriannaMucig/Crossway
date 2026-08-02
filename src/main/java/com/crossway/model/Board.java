@@ -110,4 +110,9 @@ public class Board {
         return pos.x() >= 0 && pos.x() < 19 && pos.y() >= 0 && pos.y() < 19;
     }
 
+    public void changeStone(Position pos,PlayerColor color){
+        checkOutOfBoard(pos);
+        grid[pos.x()][pos.y()].setColor(color);
+    }
+
 }
