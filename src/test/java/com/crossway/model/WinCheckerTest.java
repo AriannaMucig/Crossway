@@ -24,10 +24,11 @@ class WinCheckerTest {
     @Test
     void testBlackWinsWithStraightLine(){
         Game game = new Game();
-        for (int i = 0; i < 19; i++) {
+        for (int i = 0; i < 18; i++) {
             game.playMove(new Position(5,i));
             game.playMove(new Position(0,i));
         }
+        game.playMove(new Position(5,18));
         assertThat(game.getWinner()).isEqualTo(PlayerColor.BLACK);
     }
 
@@ -38,7 +39,6 @@ class WinCheckerTest {
             game.playMove(new Position(5,i));
             game.playMove(new Position(0,i));
         }
-        game.playMove(new Position(5,18));
         assertThat(game.getWinner()).isNull();
     }
 

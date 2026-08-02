@@ -29,6 +29,7 @@ public class Game {
         }
         board.placeStone(pos, color);
         currentTurn = (color == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
+        turnsCount++;
     }
 
     public void applyPieRule() {
