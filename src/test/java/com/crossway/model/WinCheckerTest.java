@@ -29,4 +29,14 @@ class WinCheckerTest {
         }
         assertThat(game.getWinner()).isEqualTo(PlayerColor.BLACK);
     }
+
+    @Test
+    void testIncompletePathDoesNotWin(){
+        Game game = new Game();
+        for (int i = 0; i < 18; i++) {
+            game.playMove(new Position(5,i));
+            game.playMove(new Position(0,i));
+        }
+        assertThat(game.getWinner()).isNull();
+    }
 }
