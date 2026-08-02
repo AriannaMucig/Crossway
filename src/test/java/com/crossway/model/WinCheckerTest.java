@@ -2,6 +2,7 @@ package com.crossway.model;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WinCheckerTest {
     @Test
@@ -38,5 +39,16 @@ class WinCheckerTest {
             game.playMove(new Position(0,i));
         }
         assertThat(game.getWinner()).isNull();
+    }
+
+    @Test
+    void testGameEndsOnWin(){
+        Game game = new Game();
+        for (int i = 0; i < 18; i++) {
+            game.playMove(new Position(5,i));
+            game.playMove(new Position(0,i));
+        }
+        game.playMove(new Position(5,18));
+        assertThrows(IllegalStateException.class, () -> game.playMove(new Position(3, 6)));
     }
 }
