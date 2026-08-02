@@ -5,6 +5,7 @@ public class Game {
     private Board board;
     private int turnsCount;
     private Position firstMovePosition;
+    private PlayerColor winner;
 
     public Game() {
         this.board = new Board();
@@ -38,5 +39,9 @@ public class Game {
 
     public Board getBoard() {
         return board;
+    }
+
+    public PlayerColor getWinner() {
+        return winner;
     }
 }

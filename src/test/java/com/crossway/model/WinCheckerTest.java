@@ -7,6 +7,6 @@ class WinCheckerTest {
     @Test
     void testNoWinnerOnEmptyBoard(){
         Game game = new Game();
-        assertThat(game.getWinner()).isNull;
+        assertThat(game.getWinner()).isNull();
     }
 }
