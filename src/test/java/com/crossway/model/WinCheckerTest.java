@@ -38,6 +38,7 @@ class WinCheckerTest {
             game.playMove(new Position(5,i));
             game.playMove(new Position(0,i));
         }
+        game.playMove(new Position(5,18));
         assertThat(game.getWinner()).isNull();
     }
 
