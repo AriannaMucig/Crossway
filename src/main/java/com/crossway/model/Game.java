@@ -33,7 +33,7 @@ public class Game {
     }
 
     public void applyPieRule() {
-        if (turnsCount != 1 && currentTurn == PlayerColor.WHITE) {
+        if (turnsCount != 2 && currentTurn == PlayerColor.WHITE) {
             throw new IllegalStateException("Pie rule can only be applied on the second turn!");
         }
 
