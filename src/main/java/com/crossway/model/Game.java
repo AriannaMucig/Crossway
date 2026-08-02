@@ -20,6 +20,9 @@ public class Game {
     }
 
     public void playMove(Position pos) {
+        if (getWinner()!= null){
+            throw new IllegalStateException("Game is over! Winner: " + getWinner());
+        }
         PlayerColor color = currentTurn;
         if (turnsCount == 1) {
             firstMovePosition = pos;
