@@ -2,7 +2,6 @@ package com.crossway.model;
 
 import org.junit.jupiter.api.Test;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,8 +14,8 @@ class GameTest {
     }
 
     @Test
-    void testAlternateTurns(){
-        Game game =new Game();
+    void testAlternateTurns() {
+        Game game = new Game();
 
         game.playMove(new Position(5, 6));
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
@@ -26,8 +25,8 @@ class GameTest {
     }
 
     @Test
-    void testTurnDoesNotChangeWithInvalidMove(){
-        Game game =new Game();
+    void testTurnDoesNotChangeWithInvalidMove() {
+        Game game = new Game();
 
         game.playMove(new Position(5, 6));
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
@@ -36,8 +35,8 @@ class GameTest {
     }
 
     @Test
-    void testPieRuleSwap(){
-        Game game =new Game();
+    void testPieRuleSwap() {
+        Game game = new Game();
         Position firstMove = new Position(5, 6);
         game.playMove(firstMove);
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
