@@ -79,30 +79,16 @@ public class Board {
     public List<Position> getAdjacentPositions(Position center) {
         checkOutOfBoard(center);
         List<Position> adjacentPositions = new ArrayList<>();
-        if (center.x() - 1 >= 0) {
-            adjacentPositions.add(new Position(center.x() - 1, center.y()));
-            if (center.y() - 1 >= 0) {
-                adjacentPositions.add(new Position(center.x() - 1, center.y() - 1));
-            }
-            if (center.y() + 1 < BOARD_SIZE) {
-                adjacentPositions.add(new Position(center.x() - 1, center.y() + 1));
-            }
-        }
-        if (center.x() + 1 < BOARD_SIZE) {
-            adjacentPositions.add(new Position(center.x() + 1, center.y()));
-            if (center.y() - 1 >= 0) {
-                adjacentPositions.add(new Position(center.x() + 1, center.y() - 1));
-            }
-            if (center.y() + 1 < BOARD_SIZE) {
-                adjacentPositions.add(new Position(center.x() + 1, center.y() + 1));
-            }
-        }
+        int[] offsets = {-1, 0, 1};
 
-        if (center.y() - 1 >= 0) {
-            adjacentPositions.add(new Position(center.x(), center.y() - 1));
-        }
-        if (center.y() + 1 < BOARD_SIZE) {
-            adjacentPositions.add(new Position(center.x(), center.y() + 1));
+        for (int dx : offsets) {
+            for (int dy : offsets) {
+                if (dx == 0 && dy == 0) continue;
+                Position candidate = new Position(center.x() + dx, center.y() + dy);
+                if (isInsideBoard(candidate)) {
+                    adjacentPositions.add(candidate);
+                }
+            }
         }
         return adjacentPositions;
     }
