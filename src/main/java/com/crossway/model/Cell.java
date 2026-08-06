@@ -1,5 +1,7 @@
 package com.crossway.model;
 
+import java.util.Optional;
+
 public class Cell {
     private PlayerColor color = null;
 
@@ -11,7 +13,7 @@ public class Cell {
         this.color = color;
     }
 
-    public PlayerColor getColor() {
-        return this.color;
+    public Optional<PlayerColor> getColor() {
+        return Optional.ofNullable(this.color);
     }
 }
