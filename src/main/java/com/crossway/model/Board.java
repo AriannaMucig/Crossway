@@ -44,7 +44,7 @@ public class Board {
 
     public PlayerColor getStone(Position pos) {
         checkOutOfBoard(pos);
-        return grid[pos.x()][pos.y()].getColor();
+        return grid[pos.x()][pos.y()].getColor().orElse(null);
     }
 
     private void checkOutOfBoard(Position pos) {
