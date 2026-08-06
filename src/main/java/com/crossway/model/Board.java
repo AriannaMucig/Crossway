@@ -5,11 +5,12 @@ import java.util.List;
 
 public class Board {
     private final Cell[][] grid;
+    public static final int BOARD_SIZE = 19;
 
     public Board() {
-        this.grid = new Cell[19][19];
-        for (int r = 0; r < 19; r++) {
-            for (int c = 0; c < 19; c++) {
+        this.grid = new Cell[BOARD_SIZE][BOARD_SIZE];
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {
                 grid[r][c] = new Cell();
             }
         }
@@ -20,15 +21,15 @@ public class Board {
         if (!isCellEmpty(pos)) {
             throw new IllegalArgumentException("Cell at position " + pos + " is already occupied");
         }
-        if(checkCrosscut(pos, color)){
+        if (checkCrosscut(pos, color)) {
             throw new IllegalArgumentException("Placement at " + pos + " is forbidden due to Crosscut rule");
         }
         grid[pos.x()][pos.y()].setColor(color);
     }
 
     public boolean isEmpty() {
-        for (int r = 0; r < 19; r++) {
-            for (int c = 0; c < 19; c++) {
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {
                 if (!grid[r][c].isEmpty())
                     return false;
             }
@@ -83,16 +84,16 @@ public class Board {
             if (center.y() - 1 >= 0) {
                 adjacentPositions.add(new Position(center.x() - 1, center.y() - 1));
             }
-            if (center.y() + 1 < 19) {
+            if (center.y() + 1 < BOARD_SIZE) {
                 adjacentPositions.add(new Position(center.x() - 1, center.y() + 1));
             }
         }
-        if (center.x() + 1 < 19) {
+        if (center.x() + 1 < BOARD_SIZE) {
             adjacentPositions.add(new Position(center.x() + 1, center.y()));
             if (center.y() - 1 >= 0) {
                 adjacentPositions.add(new Position(center.x() + 1, center.y() - 1));
             }
-            if (center.y() + 1 < 19) {
+            if (center.y() + 1 < BOARD_SIZE) {
                 adjacentPositions.add(new Position(center.x() + 1, center.y() + 1));
             }
         }
@@ -100,17 +101,17 @@ public class Board {
         if (center.y() - 1 >= 0) {
             adjacentPositions.add(new Position(center.x(), center.y() - 1));
         }
-        if (center.y() + 1 < 19) {
+        if (center.y() + 1 < BOARD_SIZE) {
             adjacentPositions.add(new Position(center.x(), center.y() + 1));
         }
         return adjacentPositions;
     }
 
     private boolean isInsideBoard(Position pos) {
-        return pos.x() >= 0 && pos.x() < 19 && pos.y() >= 0 && pos.y() < 19;
+        return pos.x() >= 0 && pos.x() < BOARD_SIZE && pos.y() >= 0 && pos.y() < BOARD_SIZE;
     }
 
-    public void changeStone(Position pos,PlayerColor color){
+    public void changeStone(Position pos, PlayerColor color) {
         checkOutOfBoard(pos);
         grid[pos.x()][pos.y()].setColor(color);
     }

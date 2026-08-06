@@ -104,14 +104,14 @@ class BoardTest {
     }
 
     @Test
-    void testDiagonalWhenNoCrosscut(){
+    void testDiagonalWhenNoCrosscut() {
         Board board = new Board();
-        board.placeStone(new Position(4,5), PlayerColor.BLACK);
+        board.placeStone(new Position(4, 5), PlayerColor.BLACK);
 
-        Position pos1 =new Position(3,4);
-        Position pos2 =new Position(3,6);
-        Position pos3 =new Position(5,4);
-        Position pos4 =new Position(5,6);
+        Position pos1 = new Position(3, 4);
+        Position pos2 = new Position(3, 6);
+        Position pos3 = new Position(5, 4);
+        Position pos4 = new Position(5, 6);
 
         board.placeStone(pos1, PlayerColor.BLACK);
         board.placeStone(pos2, PlayerColor.BLACK);
@@ -132,12 +132,12 @@ class BoardTest {
     }
 
     @Test
-    void TestDiagonalWhenCrosscut(){
+    void testDiagonalWhenCrosscut() {
         Board board = new Board();
-        board.placeStone(new Position(1,1), PlayerColor.BLACK);
-        board.placeStone(new Position(1,0), PlayerColor.WHITE);
-        board.placeStone(new Position(0,1), PlayerColor.WHITE);
-        assertThrows(IllegalArgumentException.class, () -> board.placeStone(new Position(0,0), PlayerColor.BLACK));
+        board.placeStone(new Position(1, 1), PlayerColor.BLACK);
+        board.placeStone(new Position(1, 0), PlayerColor.WHITE);
+        board.placeStone(new Position(0, 1), PlayerColor.WHITE);
+        assertThrows(IllegalArgumentException.class, () -> board.placeStone(new Position(0, 0), PlayerColor.BLACK));
 
     }
 }
