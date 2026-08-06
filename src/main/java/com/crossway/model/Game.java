@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class Game {
     private PlayerColor currentTurn;
-    private Board board;
+    private final Board board;
     private int turnsCount;
     private Position firstMovePosition;
 
@@ -20,7 +20,7 @@ public class Game {
     }
 
     public void playMove(Position pos) {
-        if (getWinner()!= null){
+        if (getWinner() != null) {
             throw new IllegalStateException("Game is over! Winner: " + getWinner());
         }
         PlayerColor color = currentTurn;
@@ -59,10 +59,10 @@ public class Game {
     }
 
     private boolean checkWin(PlayerColor color) {
-        boolean[][] visited = new boolean[19][19];
+        boolean[][] visited = new boolean[Board.BOARD_SIZE][Board.BOARD_SIZE];
         Queue<Position> queue = new LinkedList<>();
 
-        for (int i = 0; i < 19; i++) {
+        for (int i = 0; i < Board.BOARD_SIZE; i++) {
             Position startPos = (color == PlayerColor.WHITE) ? new Position(0, i) : new Position(i, 0);
             if (board.getStone(startPos) == color) {
                 queue.add(startPos);
@@ -72,10 +72,10 @@ public class Game {
 
         while (!queue.isEmpty()) {
             Position current = queue.poll();
-            if (color == PlayerColor.WHITE && current.x() == 18) {
+            if (color == PlayerColor.WHITE && current.x() == Board.BOARD_SIZE - 1) {
                 return true;
             }
-            if (color == PlayerColor.BLACK && current.y() == 18) {
+            if (color == PlayerColor.BLACK && current.y() == Board.BOARD_SIZE - 1) {
                 return true;
             }
 
