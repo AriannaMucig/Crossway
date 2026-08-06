@@ -16,7 +16,7 @@ class CellTest {
     void testCellSetColor() {
         Cell cell = new Cell();
         cell.setColor(PlayerColor.BLACK);
-        assertThat(cell.getColor()).isEqualTo(PlayerColor.BLACK);
+        assertThat(cell.getColor()).contains(PlayerColor.BLACK);
         assertThat(cell.isEmpty()).isFalse();
 
     }
