@@ -54,7 +54,7 @@ public class Board {
     }
 
     private boolean checkCrosscut(Position pos, PlayerColor color) {
-        PlayerColor oppositeColor = (color == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
+        PlayerColor oppositeColor = color.opposite();
 
         int[][] offsets = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 

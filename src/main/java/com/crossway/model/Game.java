@@ -28,7 +28,7 @@ public class Game {
             firstMovePosition = pos;
         }
         board.placeStone(pos, color);
-        currentTurn = (color == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
+        currentTurn = color.opposite();
         turnsCount++;
     }
 
