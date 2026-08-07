@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
 
-public class WinChecker {
+public class WinChecker implements WinningRule {
 
+    @Override
     public Optional<PlayerColor> getWinner(Board board) {
         if (checkWin(board, PlayerColor.WHITE)) {
             return Optional.of(PlayerColor.WHITE);
