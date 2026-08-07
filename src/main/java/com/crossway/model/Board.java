@@ -1,6 +1,6 @@
 package com.crossway.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -28,13 +28,9 @@ public class Board {
     }
 
     public boolean isEmpty() {
-        for (int r = 0; r < BOARD_SIZE; r++) {
-            for (int c = 0; c < BOARD_SIZE; c++) {
-                if (!grid[r][c].isEmpty())
-                    return false;
-            }
-        }
-        return true;
+        return Arrays.stream(grid)
+                .flatMap(Arrays::stream)
+                .allMatch(Cell::isEmpty);
     }
 
     public boolean isCellEmpty(Position pos) {
@@ -78,19 +74,15 @@ public class Board {
 
     public List<Position> getAdjacentPositions(Position center) {
         checkOutOfBoard(center);
-        List<Position> adjacentPositions = new ArrayList<>();
         int[] offsets = {-1, 0, 1};
 
-        for (int dx : offsets) {
-            for (int dy : offsets) {
-                if (dx == 0 && dy == 0) continue;
-                Position candidate = new Position(center.x() + dx, center.y() + dy);
-                if (isInsideBoard(candidate)) {
-                    adjacentPositions.add(candidate);
-                }
-            }
-        }
-        return adjacentPositions;
+        return Arrays.stream(offsets)
+                .boxed()
+                .flatMap(dx -> Arrays.stream(offsets)
+                        .filter(dy -> !(dx == 0 && dy == 0))
+                        .mapToObj(dy -> new Position(center.x() + dx, center.y() + dy)))
+                .filter(this::isInsideBoard)
+                .toList();
     }
 
     private boolean isInsideBoard(Position pos) {
