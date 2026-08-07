@@ -9,7 +9,7 @@ class WinCheckerTest {
     @Test
     void testNoWinnerOnEmptyBoard() {
         Game game = new Game();
-        assertThat(game.getWinner()).isNull();
+        assertThat(game.getWinner()).isEmpty();
     }
 
     @Test
@@ -19,7 +19,7 @@ class WinCheckerTest {
             game.playMove(new Position(i, 0));
             game.playMove(new Position(i, 7));
         }
-        assertThat(game.getWinner()).isEqualTo(PlayerColor.WHITE);
+        assertThat(game.getWinner()).contains(PlayerColor.WHITE);
     }
 
     @Test
@@ -30,7 +30,7 @@ class WinCheckerTest {
             game.playMove(new Position(0, i));
         }
         game.playMove(new Position(5, 18));
-        assertThat(game.getWinner()).isEqualTo(PlayerColor.BLACK);
+        assertThat(game.getWinner()).contains(PlayerColor.BLACK);
     }
 
     @Test
@@ -40,7 +40,7 @@ class WinCheckerTest {
             game.playMove(new Position(5, i));
             game.playMove(new Position(0, i));
         }
-        assertThat(game.getWinner()).isNull();
+        assertThat(game.getWinner()).isEmpty();
     }
 
     @Test
