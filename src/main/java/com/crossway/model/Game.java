@@ -23,6 +23,10 @@ public class Game {
         return currentTurn;
     }
 
+    public int getTurnsCount() {
+        return turnsCount;
+    }
+
     public void playMove(Position pos) {
         if (winningRule.getWinner(board).isPresent()) {
             throw new IllegalStateException("Game is over! Winner: " + winningRule.getWinner(board).get());
