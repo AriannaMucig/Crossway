@@ -7,22 +7,25 @@ public class Game {
     private final Board board;
     private int turnsCount;
     private Position firstMovePosition;
-    private final WinChecker winChecker;
+    private final WinningRule winningRule;
 
-    public Game() {
+    public Game(WinningRule winningRule) {
         this.board = new Board();
-        this.winChecker = new WinChecker();
+        this.winningRule = winningRule;
         this.currentTurn = PlayerColor.BLACK;
         this.turnsCount = 1;
     }
 
+    public Game() {
+        this(new WinChecker());
+    }
     public PlayerColor getCurrentTurn() {
         return currentTurn;
     }
 
     public void playMove(Position pos) {
-        if (winChecker.getWinner(board).isPresent()) {
-            throw new IllegalStateException("Game is over! Winner: " + winChecker.getWinner(board).get());
+        if (winningRule.getWinner(board).isPresent()) {
+            throw new IllegalStateException("Game is over! Winner: " + winningRule.getWinner(board).get());
         }
         PlayerColor color = currentTurn;
         if (turnsCount == 1) {
@@ -49,7 +52,7 @@ public class Game {
     }
 
     public Optional<PlayerColor> getWinner() {
-        return winChecker.getWinner(board);
+        return winningRule.getWinner(board);
     }
 
 }
