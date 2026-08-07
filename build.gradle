@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'com.github.spotbugs' version '6.0.26'
 }
 
 group = 'org.example'
@@ -14,6 +15,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.24.2'
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.13.0'
 }
 
 test {
@@ -26,5 +28,30 @@ jacocoTestReport {
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+spotbugs {
+    toolVersion = '4.8.6'
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/main.html")
+        }
+    }
+}
+
+spotbugsTest {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/test.html")
+        }
     }
 }
