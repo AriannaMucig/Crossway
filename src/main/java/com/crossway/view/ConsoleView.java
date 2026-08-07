@@ -5,12 +5,13 @@ import com.crossway.model.PlayerColor;
 import com.crossway.model.Position;
 
 import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
 
 public class ConsoleView {
     private final Scanner scanner;
 
     public ConsoleView() {
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in, StandardCharsets.UTF_8);
     }
 
     public void printBoard(Board board) {
@@ -26,7 +27,7 @@ public class ConsoleView {
                     System.out.print("  ");
                 }
             }
-            System.out.printf(" %2d\n ", i + 1);
+            System.out.printf(" %2d%n ", i + 1);
         }
         System.out.println("    A B C D E F G H I J K L M N O P Q R S\n");
     }
