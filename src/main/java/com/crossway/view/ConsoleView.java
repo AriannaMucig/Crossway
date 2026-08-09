@@ -15,21 +15,21 @@ public class ConsoleView {
     }
 
     public void printBoard(Board board) {
-        System.out.println("\n    A B C D E F G H I J K L M N O P Q R S");
+        System.out.println("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S");
         for (int i = 0; i < Board.BOARD_SIZE; i++) {
             System.out.printf("%2d ", i + 1);
             for (int j = 0; j < Board.BOARD_SIZE; j++) {
                 if (board.getStone(new Position(i, j)) == PlayerColor.BLACK) {
-                    System.out.print(" B");
+                    System.out.print(" X ");
                 } else if (board.getStone(new Position(i, j)) == PlayerColor.WHITE) {
-                    System.out.print(" W");
+                    System.out.print(" 0 ");
                 } else {
-                    System.out.print("  ");
+                    System.out.print(" * ");
                 }
             }
-            System.out.printf(" %2d%n ", i + 1);
+            System.out.printf(" %2d%n", i + 1);
         }
-        System.out.println("    A B C D E F G H I J K L M N O P Q R S\n");
+        System.out.println("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S\n");
     }
 
     public void printMessage(String message) {
@@ -37,7 +37,7 @@ public class ConsoleView {
     }
 
     public void printError(String error) {
-        System.err.println("ERROR: " + error);
+        System.out.println("ERROR: " + error);
     }
 
     public Position askForMove(PlayerColor currentTurn) {
