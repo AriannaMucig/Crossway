@@ -25,6 +25,13 @@ jobs:
       - name: Build with Gradle and Run Tests
         run: ./gradlew check jacocoTestReport
 
+      - name: Upload JaCoCo Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: build/reports/jacoco/test/html/
+
       - name: Upload SpotBugs Report
         if: always()
         uses: actions/upload-artifact@v4
