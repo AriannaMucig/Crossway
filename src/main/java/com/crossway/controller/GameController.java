@@ -16,16 +16,23 @@ public class GameController {
     public void start() {
         view.printMessage("START");
         boolean gameOver = false;
+        boolean boardNeedsRedraw = true;
 
         while (!gameOver) {
-            view.printBoard(game.getBoard());
+            if (boardNeedsRedraw) {
+                view.printBoard(game.getBoard());
+                boardNeedsRedraw = false;
+            }
+
             if (game.getTurnsCount() == 2 && view.askPieRule()) {
                 try {
                     game.applyPieRule();
-                    view.printMessage("Pie Rule applied!");
+                    view.printMessage("Pie Rule applied! Turn switched to Player " + game.getCurrentTurn());
+                    boardNeedsRedraw = true;
                     continue;
-                } catch (Exception e) {
+                } catch (IllegalStateException e) {
                     view.printError(e.getMessage());
+                    continue;
                 }
             }
 
@@ -35,10 +42,12 @@ public class GameController {
 
                 if (game.getWinner().isPresent()) {
                     view.printBoard(game.getBoard());
-                    view.printMessage("The winner is: " + game.getWinner().get());
+                    view.printMessage(" The winner is: " + game.getWinner().get());
                     gameOver = true;
+                } else {
+                    boardNeedsRedraw = true;
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException | IllegalStateException e) {
                 view.printError(e.getMessage());
             }
         }

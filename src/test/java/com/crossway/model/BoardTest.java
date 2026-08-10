@@ -21,7 +21,7 @@ class BoardTest {
 
         board.placeStone(pos, PlayerColor.BLACK);
         assertThat(board.isCellEmpty(pos)).isFalse();
-        assertThat(board.getStone(pos)).isEqualTo(PlayerColor.BLACK);
+        assertThat(board.getStone(pos)).contains(PlayerColor.BLACK);
     }
 
     @Test
@@ -119,16 +119,16 @@ class BoardTest {
         board.placeStone(pos4, PlayerColor.BLACK);
 
         assertThat(board.isCellEmpty(pos1)).isFalse();
-        assertThat(board.getStone(pos1)).isEqualTo(PlayerColor.BLACK);
+        assertThat(board.getStone(pos1)).contains(PlayerColor.BLACK);
 
         assertThat(board.isCellEmpty(pos2)).isFalse();
-        assertThat(board.getStone(pos2)).isEqualTo(PlayerColor.BLACK);
+        assertThat(board.getStone(pos2)).contains(PlayerColor.BLACK);
 
         assertThat(board.isCellEmpty(pos3)).isFalse();
-        assertThat(board.getStone(pos3)).isEqualTo(PlayerColor.BLACK);
+        assertThat(board.getStone(pos3)).contains(PlayerColor.BLACK);
 
         assertThat(board.isCellEmpty(pos4)).isFalse();
-        assertThat(board.getStone(pos4)).isEqualTo(PlayerColor.BLACK);
+        assertThat(board.getStone(pos4)).contains(PlayerColor.BLACK);
     }
 
     @Test

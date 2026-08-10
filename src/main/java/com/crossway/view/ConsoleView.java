@@ -6,6 +6,8 @@ import com.crossway.model.Position;
 
 import java.util.Scanner;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ConsoleView {
     private final Scanner scanner;
@@ -15,21 +17,25 @@ public class ConsoleView {
     }
 
     public void printBoard(Board board) {
-        System.out.println("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S");
-        for (int i = 0; i < Board.BOARD_SIZE; i++) {
-            System.out.printf("%2d ", i + 1);
-            for (int j = 0; j < Board.BOARD_SIZE; j++) {
-                if (board.getStone(new Position(i, j)) == PlayerColor.BLACK) {
-                    System.out.print(" X ");
-                } else if (board.getStone(new Position(i, j)) == PlayerColor.WHITE) {
-                    System.out.print(" 0 ");
-                } else {
-                    System.out.print(" * ");
-                }
+        String header = "    " + IntStream.range(0, Board.BOARD_SIZE)
+                .mapToObj(i -> String.valueOf((char) ('A' + i)))
+                .collect(Collectors.joining("  "));
+
+        System.out.println(header);
+
+        for (int row = 0; row < Board.BOARD_SIZE; row++) {
+            System.out.printf("%2d ", row + 1);
+            for (int col = 0; col < Board.BOARD_SIZE; col++) {
+                Position pos = new Position(row, col);
+                String symbol = board.getStone(pos)
+                        .map(color -> color == PlayerColor.BLACK ? " X " : " 0 ")
+                        .orElse(" * ");
+                System.out.print(symbol);
             }
-            System.out.printf(" %2d%n", i + 1);
+            System.out.printf(" %2d%n", row + 1);
         }
-        System.out.println("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S\n");
+
+        System.out.println(header + "\n");
     }
 
     public void printMessage(String message) {
@@ -42,7 +48,7 @@ public class ConsoleView {
 
     public Position askForMove(PlayerColor currentTurn) {
         while (true) {
-            System.out.println("Tun of " + currentTurn + ". Enter your move (A1, J10):  ");
+            System.out.println("Turn of " + currentTurn + ". Enter your move (A1, J10):  ");
             String input = scanner.next().trim().toUpperCase();
 
             if (input.length() < 2 || input.length() > 3) {

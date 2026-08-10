@@ -28,24 +28,23 @@ public class Game {
     }
 
     public void playMove(Position pos) {
-        if (winningRule.getWinner(board).isPresent()) {
-            throw new IllegalStateException("Game is over! Winner: " + winningRule.getWinner(board).get());
-        }
-        PlayerColor color = currentTurn;
+        getWinner().ifPresent(winner -> {
+            throw new IllegalStateException("Game is over! Winner: " + winner);
+        });
         if (turnsCount == 1) {
             firstMovePosition = pos;
         }
-        board.placeStone(pos, color);
-        currentTurn = color.opposite();
+        board.placeStone(pos, currentTurn);
+        currentTurn = currentTurn.opposite();
         turnsCount++;
     }
 
     public void applyPieRule() {
-        if (turnsCount != 2 && currentTurn == PlayerColor.WHITE) {
+        if (turnsCount != 2 || currentTurn != PlayerColor.WHITE) {
             throw new IllegalStateException("Pie rule can only be applied on the second turn!");
         }
 
-        board.changeStone(firstMovePosition, PlayerColor.WHITE);
+        board.applyPieRule(firstMovePosition, PlayerColor.WHITE);
 
         currentTurn = PlayerColor.BLACK;
         turnsCount++;

@@ -1,6 +1,6 @@
 package com.crossway.model;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Optional;
 import java.util.Queue;
 
@@ -19,11 +19,11 @@ public class WinChecker implements WinningRule {
 
     private boolean checkWin(Board board, PlayerColor color) {
         boolean[][] visited = new boolean[Board.BOARD_SIZE][Board.BOARD_SIZE];
-        Queue<Position> queue = new LinkedList<>();
+        Queue<Position> queue = new ArrayDeque<>();
 
         for (int i = 0; i < Board.BOARD_SIZE; i++) {
             Position startPos = (color == PlayerColor.WHITE) ? new Position(0, i) : new Position(i, 0);
-            if (board.getStone(startPos) == color) {
+            if (isStoneOfColor(board, startPos, color)) {
                 queue.add(startPos);
                 visited[startPos.x()][startPos.y()] = true;
             }
@@ -31,20 +31,29 @@ public class WinChecker implements WinningRule {
 
         while (!queue.isEmpty()) {
             Position current = queue.poll();
-            if (color == PlayerColor.WHITE && current.x() == Board.BOARD_SIZE - 1) {
-                return true;
-            }
-            if (color == PlayerColor.BLACK && current.y() == Board.BOARD_SIZE - 1) {
+
+            if (hasReachedOppositeSide(current, color)) {
                 return true;
             }
 
             for (Position neighbor : board.getAdjacentPositions(current)) {
-                if (!visited[neighbor.x()][neighbor.y()] && board.getStone(neighbor) == color) {
+                if (!visited[neighbor.x()][neighbor.y()] && isStoneOfColor(board, neighbor, color)) {
                     visited[neighbor.x()][neighbor.y()] = true;
                     queue.add(neighbor);
                 }
             }
         }
         return false;
+    }
+
+    private boolean isStoneOfColor(Board board, Position pos, PlayerColor color) {
+        return board.getStone(pos)
+                .map(color::equals)
+                .orElse(false);
+    }
+
+    private boolean hasReachedOppositeSide(Position pos, PlayerColor color) {
+        return (color == PlayerColor.WHITE && pos.x() == Board.BOARD_SIZE - 1) ||
+                (color == PlayerColor.BLACK && pos.y() == Board.BOARD_SIZE - 1);
     }
 }
