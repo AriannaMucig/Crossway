@@ -42,7 +42,7 @@ class GameTest {
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.WHITE);
 
         game.applyPieRule();
-        assertThat(game.getBoard().getStone(firstMove)).isEqualTo(PlayerColor.WHITE);
+        assertThat(game.getBoard().getStone(firstMove)).contains(PlayerColor.WHITE);
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
     }
 }
