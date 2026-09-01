@@ -16,39 +16,36 @@ public class GameController {
     public void start() {
         view.printRules();
         boolean gameOver = false;
-        boolean boardNeedsRedraw = true;
 
         while (!gameOver) {
-            if (boardNeedsRedraw) {
-                view.printBoard(game.getBoard());
-                boardNeedsRedraw = false;
+            view.printBoard(game.getBoard());
+
+            if (game.getTurnsCount() == 2) {
+                if (view.askPieRule()) {
+                    try {
+                        game.applyPieRule();
+                        view.printMessage("Pie Rule applied! Turn switched to Player " + game.getCurrentTurn());
+                        continue;
+                    } catch (IllegalStateException e) {
+                        view.printError(e.getMessage());
+                    }
+                }
             }
 
-            if (game.getTurnsCount() == 2 && view.askPieRule()) {
+            boolean validMovePlaced = false;
+            while (!validMovePlaced) {
                 try {
-                    game.applyPieRule();
-                    view.printMessage("Pie Rule applied! Turn switched to Player " + game.getCurrentTurn());
-                    boardNeedsRedraw = true;
-                    continue;
-                } catch (IllegalStateException e) {
+                    Position move = view.askForMove(game.getCurrentTurn());
+                    game.playMove(move);
+                    validMovePlaced = true;
+                } catch (RuntimeException e) {
                     view.printError(e.getMessage());
-                    continue;
                 }
             }
-
-            try {
-                Position move = view.askForMove(game.getCurrentTurn());
-                game.playMove(move);
-
-                if (game.getWinner().isPresent()) {
-                    view.printBoard(game.getBoard());
-                    view.printMessage(" The winner is: " + game.getWinner().get());
-                    gameOver = true;
-                } else {
-                    boardNeedsRedraw = true;
-                }
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                view.printError(e.getMessage());
+            if (game.getWinner().isPresent()) {
+                view.printBoard(game.getBoard());
+                view.printMessage("The winner is: " + game.getWinner().get());
+                gameOver = true;
             }
         }
     }

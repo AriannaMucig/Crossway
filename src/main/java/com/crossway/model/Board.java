@@ -20,7 +20,7 @@ public class Board {
     public void placeStone(Position pos, PlayerColor color) {
         checkOutOfBoard(pos);
         if (!isCellEmpty(pos)) {
-            throw new IllegalArgumentException("Cell at position " + pos + " is already occupied");
+            throw new IllegalArgumentException("[Board] Cell at position " + pos + " is already occupied");
         }
         if (checkCrosscut(pos, color)) {
             throw new IllegalArgumentException("Placement at " + pos + " is forbidden due to Crosscut rule");
@@ -64,16 +64,15 @@ public class Board {
             Position adj2 = new Position(pos.x(), pos.y() + dy);
 
             if (isInsideBoard(diag) && isInsideBoard(adj1) && isInsideBoard(adj2)) {
-                boolean isDiagSameColor = getStone(diag).map(c -> c == color).orElse(false);
-                boolean isAdj1Opposite = getStone(adj1).map(c -> c == oppositeColor).orElse(false);
-                boolean isAdj2Opposite = getStone(adj2).map(c -> c == oppositeColor).orElse(false);
+                boolean isDiagSameColor = isStoneOfColor(diag, color);
+                boolean isAdj1Opposite = isStoneOfColor(adj1, oppositeColor);
+                boolean isAdj2Opposite = isStoneOfColor(adj2, oppositeColor);
 
                 if (isDiagSameColor && isAdj1Opposite && isAdj2Opposite) {
                     return true;
                 }
             }
         }
-
         return false;
     }
 
@@ -92,6 +91,11 @@ public class Board {
 
     private boolean isInsideBoard(Position pos) {
         return pos.x() >= 0 && pos.x() < BOARD_SIZE && pos.y() >= 0 && pos.y() < BOARD_SIZE;
+    }
+
+    private boolean isStoneOfColor(Position pos, PlayerColor color) {
+        if (!isInsideBoard(pos)) return false;
+        return grid[pos.x()][pos.y()].getColor().map(c -> c == color).orElse(false);
     }
 
     public void applyPieRule(Position pos, PlayerColor color) {
