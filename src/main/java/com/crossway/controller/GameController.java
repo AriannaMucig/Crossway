@@ -14,7 +14,7 @@ public class GameController {
     }
 
     public void start() {
-        view.printMessage("START");
+        view.printRules();
         boolean gameOver = false;
         boolean boardNeedsRedraw = true;
 
