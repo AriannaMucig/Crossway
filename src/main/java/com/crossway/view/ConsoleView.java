@@ -48,8 +48,9 @@ public class ConsoleView {
 
     public Position askForMove(PlayerColor currentTurn) {
         while (true) {
-            System.out.println("Turn of " + currentTurn + ". Enter your move (A1, J10):  ");
-            String input = scanner.next().trim().toUpperCase();
+            String symbol = (currentTurn == PlayerColor.BLACK) ? "X" : "0";
+            System.out.println("Turn of " + currentTurn + " (" + symbol + "). Enter your move (A1, J10):  ");
+            String input = scanner.nextLine().trim().toUpperCase();
 
             if (input.length() < 2 || input.length() > 3) {
                 printMessage("Invalid format! Enter the letter (A-S) first, then the number (1-19)");
@@ -83,8 +84,25 @@ public class ConsoleView {
 
     public boolean askPieRule() {
         System.out.println("Do you want to apply the Pie Rule? (y/n): ");
-        String response = scanner.next();
+        String response = scanner.nextLine();
         return response.equalsIgnoreCase("y");
+    }
+
+    public void printRules() {
+        String rules = """
+                CROSSWAY
+                
+                Crossway is an abstract strategy board game played on a 19x19 grid between two players: Black (X) and White (O).
+                
+                Rules:
+                - White attempts to form a continuous chain connecting the North and South borders.
+                - Black attempts to form a continuous chain connecting the West and East borders.
+                - Chains can connect orthogonally (up/down/left/right) or diagonally.
+                - Crossway Constraint: A player is forbidden from placing a piece that completes a 2x2 square of alternating pieces (W-B / B-W), as this creates an illegal diagonal intersection.
+                - Pie Rule: After Black makes the very first move, White has the option to swap colors and adopt Black's position.
+                """;
+
+        System.out.println(rules);
     }
 }
 
