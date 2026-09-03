@@ -37,7 +37,7 @@ public class GraphicalUserInterface extends JFrame {
         infoButton.setMargin(new Insets(0, 0, 0, 0));
         infoButton.setContentAreaFilled(false);
         infoButton.setBorderPainted(false);
-        infoButton.addActionListener(_ -> showRules());
+        infoButton.addActionListener(e -> showRules());
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         leftPanel.setOpaque(false);
@@ -51,7 +51,7 @@ public class GraphicalUserInterface extends JFrame {
         restartButton.setMargin(new Insets(0, 0, 0, 0));
         restartButton.setContentAreaFilled(false);
         restartButton.setBorderPainted(false);
-        restartButton.addActionListener(_ -> handleRestartButton());
+        restartButton.addActionListener(e -> handleRestartButton());
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         rightPanel.setOpaque(false);
@@ -84,7 +84,7 @@ public class GraphicalUserInterface extends JFrame {
                 int currentRow = r;
                 int currentColumn = c;
 
-                button.addActionListener(_ -> playMove(currentRow, currentColumn));
+                button.addActionListener(e -> playMove(currentRow, currentColumn));
 
                 grid[r][c] = button;
                 gridPanel.add(button);
