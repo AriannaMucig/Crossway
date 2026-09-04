@@ -5,12 +5,13 @@ import com.crossway.model.Game;
 import com.crossway.view.*;
 
 import javax.swing.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Game game = new Game();
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         askMode(game, scanner);
     }
 
