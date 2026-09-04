@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Crossway:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Crossway_jar2</output-path>
+    <root id="archive" name="Crossway.jar">
+      <element id="artifact" artifact-name="Crossway.jar" />
+    </root>
+  </artifact>
+</component>
