@@ -2,7 +2,9 @@ package com.crossway;
 
 import com.crossway.controller.GameController;
 import com.crossway.model.Game;
-import com.crossway.view.*;
+import com.crossway.view.ConsoleView;
+import com.crossway.view.GameView;
+import com.crossway.view.GraphicalUserInterface;
 
 import javax.swing.*;
 import java.nio.charset.StandardCharsets;
@@ -24,15 +26,18 @@ public class Main {
 
             if (response.equals("c")) {
                 validChoice = true;
-                ConsoleView view = new ConsoleView();
+                GameView view = new ConsoleView(scanner);
                 GameController controller = new GameController(game, view);
                 controller.start();
+
             } else if (response.equals("g")) {
                 validChoice = true;
                 SwingUtilities.invokeLater(() -> {
-                    GraphicalUserInterface graphicalUserInterface = new GraphicalUserInterface(game);
-                    graphicalUserInterface.setVisible(true);
+                    GraphicalUserInterface gui = new GraphicalUserInterface();
+                    GameController controller = new GameController(game, gui);
+                    new Thread(controller::start).start();
                 });
+
             } else {
                 System.out.println("Invalid choice. Please enter 'c' for CLI or 'g' for GUI.");
             }
