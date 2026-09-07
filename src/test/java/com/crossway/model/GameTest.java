@@ -45,4 +45,26 @@ class GameTest {
         assertThat(game.getBoard().getStone(firstMove)).contains(PlayerColor.WHITE);
         assertThat(game.getCurrentTurn()).isEqualTo(PlayerColor.BLACK);
     }
+
+    @Test
+    void testGetTurnsCount() {
+        Game game = new Game();
+        assertThat(game.getTurnsCount()).isEqualTo(1);
+
+        game.playMove(new Position(0, 0));
+
+        assertThat(game.getTurnsCount()).isEqualTo(2);
+    }
+
+    @Test
+    void testApplyPieRuleInvalidTurns() {
+        Game game = new Game();
+        assertThrows(IllegalStateException.class, game::applyPieRule);
+
+        game.playMove(new Position(0, 0));
+        game.applyPieRule();
+
+        assertThrows(IllegalStateException.class, game::applyPieRule);
+    }
+
 }
