@@ -140,4 +140,30 @@ class BoardTest {
         assertThrows(IllegalArgumentException.class, () -> board.placeStone(new Position(0, 0), PlayerColor.BLACK));
 
     }
+
+    @Test
+    void testToStringOnEmptyBoard() {
+        Board board = new Board();
+        String boardString = board.toString();
+
+        assertThat(boardString).isNotNull();
+        assertThat(boardString).contains("A");
+        assertThat(boardString).contains("S");
+        assertThat(boardString).contains("*");
+    }
+
+    @Test
+    void testToStringWithStones() {
+        Board board = new Board();
+        Position posBlack = new Position(0, 0);
+        Position posWhite = new Position(1, 1);
+
+        board.placeStone(posBlack, PlayerColor.BLACK);
+        board.placeStone(posWhite, PlayerColor.WHITE);
+
+        String boardString = board.toString();
+
+        assertThat(boardString).contains("X");
+        assertThat(boardString).contains("0");
+    }
 }
