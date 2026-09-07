@@ -58,4 +58,10 @@ public class Game {
         return winningRule.getWinner(board);
     }
 
+    public void reset() {
+        this.board.reset();
+        this.currentTurn = PlayerColor.BLACK;
+        this.turnsCount = 1;
+        this.firstMovePosition = null;
+    }
 }
