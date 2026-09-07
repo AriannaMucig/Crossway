@@ -69,6 +69,7 @@ class GameControllerTest {
         when(viewMock.askPlayAgain(PlayerColor.WHITE)).thenReturn(false);
 
         doReturn(Optional.empty())
+                .doReturn(Optional.empty())
                 .doReturn(Optional.of(PlayerColor.WHITE))
                 .when(gameSpy).getWinner();
 

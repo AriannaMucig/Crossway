@@ -39,8 +39,7 @@ public class GameController {
                 if (view.isRestartRequested()) {
                     game.reset();
                     view.resetView();
-                    view.printRules();
-                    continue;
+                    break;
                 }
 
                 if (move != null) {
@@ -59,7 +58,6 @@ public class GameController {
                 if (playAgain) {
                     game.reset();
                     view.resetView();
-                    view.printRules();
                 } else {
                     keepPlaying = false;
                 }
