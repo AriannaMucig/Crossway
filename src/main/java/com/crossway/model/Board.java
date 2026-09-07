@@ -3,6 +3,8 @@ package com.crossway.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Board {
     private final Cell[][] grid;
@@ -20,7 +22,7 @@ public class Board {
     public void placeStone(Position pos, PlayerColor color) {
         checkOutOfBoard(pos);
         if (!isCellEmpty(pos)) {
-            throw new IllegalArgumentException("[Board] Cell at position " + pos + " is already occupied");
+            throw new IllegalArgumentException("Cell at position " + pos + " is already occupied");
         }
         if (checkCrosscut(pos, color)) {
             throw new IllegalArgumentException("Placement at " + pos + " is forbidden due to Crosscut rule");
@@ -101,6 +103,35 @@ public class Board {
     public void applyPieRule(Position pos, PlayerColor color) {
         checkOutOfBoard(pos);
         grid[pos.x()][pos.y()].setColor(color);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String header = "    " + IntStream.range(0, BOARD_SIZE)
+                .mapToObj(i -> String.valueOf((char) ('A' + i)))
+                .collect(Collectors.joining("  "));
+
+        stringBuilder.append(String.format("%s%n", header));
+
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            stringBuilder.append(String.format("%2d ", row + 1));
+
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                Position pos = new Position(row, col);
+                String symbol = getStone(pos)
+                        .map(color -> color == PlayerColor.BLACK ? " X " : " 0 ")
+                        .orElse(" * ");
+                stringBuilder.append(symbol);
+            }
+
+            stringBuilder.append(String.format(" %2d%n", row + 1));
+        }
+
+        stringBuilder.append(header);
+
+        return stringBuilder.toString();
     }
 
 }

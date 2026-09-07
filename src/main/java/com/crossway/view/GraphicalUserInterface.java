@@ -1,24 +1,24 @@
 package com.crossway.view;
 
-import com.crossway.model.Game;
+import com.crossway.model.Board;
 import com.crossway.model.PlayerColor;
 import com.crossway.model.Position;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Optional;
 
-public class GraphicalUserInterface extends JFrame {
+public class GraphicalUserInterface extends JFrame implements GameView {
 
     private static final int ROW = 19;
     private static final int COLUMN = 19;
     private final JButton[][] grid = new JButton[ROW][COLUMN];
-    private Game game;
     private final JLabel label;
+    private Position lastClickedPosition = null;
+    private boolean restartRequested = false;
 
-
-    public GraphicalUserInterface(Game game) {
-        this.game = game;
+    public GraphicalUserInterface() {
         setTitle("Crossway");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 650);
@@ -37,7 +37,7 @@ public class GraphicalUserInterface extends JFrame {
         infoButton.setMargin(new Insets(0, 0, 0, 0));
         infoButton.setContentAreaFilled(false);
         infoButton.setBorderPainted(false);
-        infoButton.addActionListener(e -> showRules());
+        infoButton.addActionListener(e -> printRules());
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         leftPanel.setOpaque(false);
@@ -58,7 +58,7 @@ public class GraphicalUserInterface extends JFrame {
         rightPanel.add(restartButton);
         topPanel.add(rightPanel, BorderLayout.EAST);
 
-        label = new JLabel();
+        label = new JLabel("Welcome to Crossway");
         label.setForeground(Color.BLACK);
         label.setFont(new Font(Font.MONOSPACED, Font.BOLD, 28));
         label.setHorizontalAlignment(JLabel.CENTER);
@@ -69,7 +69,6 @@ public class GraphicalUserInterface extends JFrame {
         centerPanel.add(label);
         topPanel.add(centerPanel, BorderLayout.CENTER);
 
-        updateLabel();
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel gridPanel = new JPanel(new GridLayout(ROW, COLUMN, 1, 1));
@@ -84,7 +83,7 @@ public class GraphicalUserInterface extends JFrame {
                 int currentRow = r;
                 int currentColumn = c;
 
-                button.addActionListener(e -> playMove(currentRow, currentColumn));
+                button.addActionListener(e -> onSquareClicked(currentRow, currentColumn));
 
                 grid[r][c] = button;
                 gridPanel.add(button);
@@ -92,25 +91,32 @@ public class GraphicalUserInterface extends JFrame {
         }
 
         Border coloredBorder = getBorder();
-
         gridPanel.setBorder(coloredBorder);
         mainPanel.add(gridPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
+        setVisible(true);
     }
 
-    private void handleRestartButton() {
+    private void onSquareClicked(int r, int c) {
+        synchronized (this) {
+            this.lastClickedPosition = new Position(r, c);
+            this.notifyAll();
+        }
+    }
+
+    private synchronized void handleRestartButton() {
         int confirmRestart = JOptionPane.showConfirmDialog(
                 this,
-                "Do you want to restart  the game?",
+                "Do you want to restart the game?",
                 "Restart",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
 
         if (confirmRestart == JOptionPane.YES_OPTION) {
-            restartGame();
+            this.restartRequested = true;
+            this.notifyAll();
         }
-
     }
 
     private static Border getBorder() {
@@ -125,89 +131,99 @@ public class GraphicalUserInterface extends JFrame {
         );
     }
 
-    private void showRules() {
+    @Override
+    public void printRules() {
         String rules = """
-                Rules:
+                CROSSWAY RULES:
                 - White attempts to form a continuous chain connecting the North and South borders.
                 - Black attempts to form a continuous chain connecting the West and East borders.
                 - Chains can connect orthogonally (up/down/left/right) or diagonally.
                 - Crossway Constraint: A player is forbidden from placing a piece that completes a 2x2 square of alternating pieces (W-B / B-W), as this creates an illegal diagonal intersection.
                 - Pie Rule: After Black makes the very first move, White has the option to swap colors and adopt Black's position.
                 """;
-
-        JOptionPane.showMessageDialog(
-                this,
-                rules,
-                "Rules",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        JOptionPane.showMessageDialog(this, rules, "Rules", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void playMove(int r, int c) {
-        JButton selectedButton = grid[r][c];
-        PlayerColor playerWhoMoved = game.getCurrentTurn();
-
-        try {
-            Position move = new Position(r, c);
-            game.playMove(move);
-
-            if (playerWhoMoved == PlayerColor.BLACK) {
-                selectedButton.setBackground(Color.BLACK);
-            } else {
-                selectedButton.setBackground(Color.WHITE);
+    @Override
+    public void printBoard(Board board) {
+        SwingUtilities.invokeLater(() -> {
+            for (int r = 0; r < ROW; r++) {
+                for (int c = 0; c < COLUMN; c++) {
+                    Position pos = new Position(r, c);
+                    Optional<PlayerColor> occupant = board.getStone(pos);
+                    if (occupant.isPresent()) {
+                        grid[r][c].setBackground(occupant.get() == PlayerColor.BLACK ? Color.BLACK : Color.WHITE);
+                        grid[r][c].setEnabled(false);
+                    } else {
+                        grid[r][c].setBackground(new Color(224, 210, 239));
+                        grid[r][c].setEnabled(true);
+                    }
+                }
             }
-
-            selectedButton.setOpaque(true);
-            selectedButton.setContentAreaFilled(true);
-            selectedButton.setEnabled(false);
-            selectedButton.repaint();
-
-            updateLabel();
-
-        } catch (RuntimeException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Invalid move, read the rules",
-                    "",
-                    JOptionPane.WARNING_MESSAGE);
-        }
-
-        if (game.getWinner().isPresent()) {
-            handleGameOver(playerWhoMoved);
-        }
-
-        if (game.getTurnsCount() == 2) {
-            askPieRule(selectedButton);
-
-        }
+        });
     }
 
-    private void askPieRule(JButton selectedButton) {
+    @Override
+    public boolean askPieRule() {
         Object[] options = {"Yes", "No"};
-
         int choice = JOptionPane.showOptionDialog(
                 this,
                 "Do you want to apply the Pie Rule?",
                 "Pie Rule",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[1]
+                null, options, options[1]
         );
-
-        if (choice == JOptionPane.YES_OPTION) {
-            game.applyPieRule();
-            selectedButton.setBackground(Color.WHITE);
-        }
-        updateLabel();
+        return choice == JOptionPane.YES_OPTION;
     }
 
-    private void handleGameOver(PlayerColor playerWhoMoved) {
-        Object[] options = {"Restart", "Esc"};
+    @Override
+    public synchronized Position askForMove(PlayerColor playerColor) {
+        label.setText("Turn of " + playerColor);
+        label.setForeground(playerColor == PlayerColor.BLACK ? Color.BLACK : Color.WHITE);
 
+        lastClickedPosition = null;
+
+        while (lastClickedPosition == null && !restartRequested) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        if (restartRequested) {
+            return null;
+        }
+
+        return lastClickedPosition;
+    }
+
+    @Override
+    public void printMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void printError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Invalid Move", JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    public synchronized boolean isRestartRequested() {
+        if (restartRequested) {
+            restartRequested = false;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean askPlayAgain(PlayerColor winner) {
+        Object[] options = {"Restart", "Exit"};
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "The winner is " + playerWhoMoved + "!\nDo you want to play again?",
+                "The winner is " + winner + "!\nDo you want to play again?",
                 "Game Over",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -216,33 +232,24 @@ public class GraphicalUserInterface extends JFrame {
                 options[0]
         );
 
-        if (choice == JOptionPane.YES_OPTION) {
-            restartGame();
-        } else {
+        if (choice != JOptionPane.YES_OPTION) {
             dispose();
+            return false;
         }
+        return true;
     }
 
-    private void restartGame() {
-        this.game = new Game();
-
-        for (int r = 0; r < ROW; r++) {
-            for (int c = 0; c < COLUMN; c++) {
-                JButton button = grid[r][c];
-                button.setBackground(new Color(224, 210, 239));
-                button.setEnabled(true);
+    @Override
+    public void resetView() {
+        SwingUtilities.invokeLater(() -> {
+            for (int r = 0; r < ROW; r++) {
+                for (int c = 0; c < COLUMN; c++) {
+                    grid[r][c].setBackground(new Color(224, 210, 239));
+                    grid[r][c].setEnabled(true);
+                }
             }
-        }
-
-        updateLabel();
-    }
-
-    private void updateLabel() {
-        label.setText("Turn of " + game.getCurrentTurn());
-        if (game.getCurrentTurn() == PlayerColor.BLACK) {
+            label.setText("Welcome to Crossway");
             label.setForeground(Color.BLACK);
-        } else if (game.getCurrentTurn() == PlayerColor.WHITE) {
-            label.setForeground(Color.WHITE);
-        }
+        });
     }
 }
