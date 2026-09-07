@@ -37,7 +37,7 @@ public class GameController {
                 Position move = view.askForMove(game.getCurrentTurn());
 
                 if (view.isRestartRequested()) {
-                    game = new Game();
+                    game.reset();
                     view.resetView();
                     view.printRules();
                     continue;
@@ -57,7 +57,9 @@ public class GameController {
                 boolean playAgain = view.askPlayAgain(game.getWinner().get());
 
                 if (playAgain) {
-                    game = new Game();
+                    game.reset();
+                    view.resetView();
+                    view.printRules();
                 } else {
                     keepPlaying = false;
                 }

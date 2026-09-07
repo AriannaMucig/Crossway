@@ -134,4 +134,12 @@ public class Board {
         return stringBuilder.toString();
     }
 
+    public void reset() {
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {
+                grid[r][c] = new Cell();
+            }
+        }
+    }
+
 }
