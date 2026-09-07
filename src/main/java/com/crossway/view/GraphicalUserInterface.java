@@ -105,15 +105,15 @@ public class GraphicalUserInterface extends JFrame implements GameView {
     }
 
     private synchronized void handleRestartButton() {
-        int confirmRestart = JOptionPane.showConfirmDialog(
+        Object[] options = {"Yes", "No"};
+        int confirmRestart = DialogHelper.showStyledConfirmDialog(
                 this,
                 "Do you want to restart the game?",
                 "Restart",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
+                options
         );
 
-        if (confirmRestart == JOptionPane.YES_OPTION) {
+        if (confirmRestart == 0) {
             this.restartRequested = true;
             this.notifyAll();
         }
@@ -141,7 +141,7 @@ public class GraphicalUserInterface extends JFrame implements GameView {
                 - Crossway Constraint: A player is forbidden from placing a piece that completes a 2x2 square of alternating pieces (W-B / B-W), as this creates an illegal diagonal intersection.
                 - Pie Rule: After Black makes the very first move, White has the option to swap colors and adopt Black's position.
                 """;
-        JOptionPane.showMessageDialog(this, rules, "Rules", JOptionPane.INFORMATION_MESSAGE);
+        DialogHelper.showStyledMessage(this, rules, "Rules", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
@@ -166,15 +166,13 @@ public class GraphicalUserInterface extends JFrame implements GameView {
     @Override
     public boolean askPieRule() {
         Object[] options = {"Yes", "No"};
-        int choice = JOptionPane.showOptionDialog(
+        int choice = DialogHelper.showStyledConfirmDialog(
                 this,
                 "Do you want to apply the Pie Rule?",
                 "Pie Rule",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null, options, options[1]
+                options
         );
-        return choice == JOptionPane.YES_OPTION;
+        return choice == 0;
     }
 
     @Override
@@ -201,12 +199,12 @@ public class GraphicalUserInterface extends JFrame implements GameView {
 
     @Override
     public void printMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+        DialogHelper.showStyledMessage(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public void printError(String error) {
-        JOptionPane.showMessageDialog(this, error, "Invalid Move", JOptionPane.WARNING_MESSAGE);
+        DialogHelper.showStyledMessage(this, error, "Invalid Move", JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
