@@ -1,11 +1,16 @@
 plugins {
     id 'java'
+    id 'application'
     id 'jacoco'
     id 'com.github.spotbugs' version '6.0.26'
 }
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
+
+application {
+    mainClass = 'com.crossway.Main' 
+}
 
 repositories {
     mavenCentral()
@@ -23,7 +28,7 @@ dependencies {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
-    jvmArgs '-Dnet.bytebuddy.experimental=true'
+    jvmArgs '-Dnet.bytebuddy.experimental=true', '-XX:+EnableDynamicAgentLoading'
 }
 
 jacocoTestReport {
@@ -31,6 +36,13 @@ jacocoTestReport {
     reports {
         xml.required = true
         html.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/view/**'
+            ])
+        }))
     }
 }
 
