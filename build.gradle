@@ -12,6 +12,10 @@ application {
     mainClass = 'com.crossway.Main' 
 }
 
+run {
+    standardInput = System.in
+}
+
 repositories {
     mavenCentral()
 }
