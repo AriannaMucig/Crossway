@@ -17,7 +17,9 @@ Crossway is an abstract strategy board game played on an $19 \times 19$ grid bet
 ## Tech Stack
 
 - **Language:** Java 17+
-- **Build Tool:** Gradle
-- **Testing Framework:** JUnit 5 & AssertJ
-- **CI System:** GitHub Actions (`build.yml`)
+- **Build Tool:** Gradle (Gradle Wrapper)
+- **Testing Framework:** JUnit 5, AssertJ, Mockito
+- **Quality & Static Analysis:** JaCoCo, SpotBugs
+- **CI/CD Pipeline:** GitHub Actions (`build.yml`)
+- **Architecture & UI:** MVC Pattern, SOLID Principles, Dual UI (CLI / Java GUI)
 
