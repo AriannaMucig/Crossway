@@ -23,3 +23,31 @@ Crossway is an abstract strategy board game played on an $19 \times 19$ grid bet
 - **CI/CD Pipeline:** GitHub Actions (`build.yml`)
 - **Architecture & UI:** MVC Pattern, SOLID Principles, Dual UI (CLI / Java GUI)
 
+## Getting Started & Execution
+
+Clone the repository:
+```bash
+git clone [https://github.com/AriannaMucig/Crossway.git](https://github.com/AriannaMucig/Crossway.git)
+cd Crossway
+```
+
+To launch the game:
+```bash
+./gradlew run
+```
+
+Execute the unit test suite using JUnit 5, AssertJ, and Mockito:
+```bash
+./gradlew test
+```
+
+Generate the HTML code coverage report:
+```bash
+./gradlew jacocoTestReport
+```
+
+Perform static code analysis to detect potential bugs and code smells:
+```bash
+./gradlew spotbugsMain spotbugsTest
+```
+
