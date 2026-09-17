@@ -27,7 +27,7 @@ Crossway is an abstract strategy board game played on an $19 \times 19$ grid bet
 
 Clone the repository:
 ```bash
-git clone [https://github.com/AriannaMucig/Crossway.git](https://github.com/AriannaMucig/Crossway.git)
+git clone https://github.com/AriannaMucig/Crossway.git
 cd Crossway
 ```
 
